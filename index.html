@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎮 ComuniGame — 6° Primaria</title>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   ROOT & RESET
+============================================================ */
+:root {
+  --bg1: #1a1a2e;
+  --bg2: #16213e;
+  --card: #0f3460;
+  --card2: #162447;
+  --accent: #e94560;
+  --gold: #FFD700;
+  --lime: #39FF14;
+  --cyan: #00F5FF;
+  --purple: #BF5FFF;
+  --orange: #FF7C2A;
+  --pink: #FF6B9D;
+  --white: #FFFFFF;
+  --offwhite: #E8F4FF;
+  --dim: rgba(232,244,255,0.55);
+  --r: 20px;
+  --rs: 12px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow-x:hidden;}
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--bg1);
+  color:var(--white);
+  min-height:100vh;
+  position:relative;
+  overflow-x:hidden;
+}
+
+/* ============================================================
+   ANIMATED BG
+============================================================ */
+.bg-shapes{
+  position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+}
+.shape{
+  position:absolute;border-radius:50%;opacity:0.07;
+  animation:floatShape var(--dur,10s) ease-in-out infinite;
+}
+.shape:nth-child(1){width:400px;height:400px;background:#e94560;top:-100px;left:-100px;--dur:12s;}
+.shape:nth-child(2){width:300px;height:300px;background:#00F5FF;bottom:-80px;right:-60px;--dur:9s;animation-direction:reverse;}
+.shape:nth-child(3){width:200px;height:200px;background:#FFD700;top:40%;left:60%;--dur:15s;}
+.shape:nth-child(4){width:150px;height:150px;background:#39FF14;top:20%;right:20%;--dur:8s;animation-direction:reverse;}
+@keyframes floatShape{
+  0%,100%{transform:translateY(0) scale(1);}
+  50%{transform:translateY(-30px) scale(1.05);}
+}
+
+/* ============================================================
+   SCREENS
+============================================================ */
+.screen{
+  display:none;
+  position:relative;z-index:1;
+  min-height:100vh;
+  padding:20px 16px;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+}
+.screen.active{display:flex;}
+
+/* ============================================================
+   SCREEN: START
+============================================================ */
+#screen-start{
+  text-align:center;
+  gap:24px;
+}
+.game-logo{
+  font-family:'Lilita One',cursive;
+  font-size:clamp(2.8rem,7vw,5rem);
+  line-height:1;
+  background:linear-gradient(135deg,var(--gold),var(--accent),var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  filter:drop-shadow(0 0 20px rgba(233,69,96,0.5));
+  animation:titlePulse 3s ease-in-out infinite;
+}
+@keyframes titlePulse{
+  0%,100%{filter:drop-shadow(0 0 20px rgba(233,69,96,0.5));}
+  50%{filter:drop-shadow(0 0 40px rgba(0,245,255,0.6));}
+}
+.logo-sub{
+  font-size:1.3rem;font-weight:700;
+  color:var(--dim);letter-spacing:1px;
+}
+.start-mascot{
+  font-size:5rem;
+  animation:bounce 1.5s ease-in-out infinite;
+}
+@keyframes bounce{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-14px);}
+}
+.start-info{
+  display:flex;gap:16px;justify-content:center;flex-wrap:wrap;
+}
+.info-chip{
+  background:rgba(255,255,255,0.08);
+  border:2px solid rgba(255,255,255,0.15);
+  border-radius:50px;
+  padding:10px 22px;
+  font-weight:700;font-size:1rem;
+  display:flex;align-items:center;gap:8px;
+}
+.btn-start{
+  font-family:'Lilita One',cursive;
+  font-size:1.6rem;letter-spacing:1px;
+  padding:18px 60px;
+  border-radius:50px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--accent),#c0392b);
+  color:white;
+  box-shadow:0 0 30px rgba(233,69,96,0.6), 0 8px 0 #8b0000;
+  transition:all 0.15s;
+  position:relative;top:0;
+}
+.btn-start:hover{
+  box-shadow:0 0 50px rgba(233,69,96,0.9), 0 4px 0 #8b0000;
+  top:-3px;
+}
+.btn-start:active{
+  box-shadow:0 0 20px rgba(233,69,96,0.4), 0 2px 0 #8b0000;
+  top:2px;
+}
+
+/* ============================================================
+   SCREEN: READING
+============================================================ */
+#screen-reading{
+  gap:20px;
+  max-width:780px;
+  margin:0 auto;
+  width:100%;
+}
+.reading-badge{
+  background:linear-gradient(135deg,var(--cyan),#0099B8);
+  border-radius:50px;padding:8px 24px;
+  font-family:'Lilita One',cursive;font-size:1.1rem;
+  box-shadow:0 0 18px rgba(0,245,255,0.4);
+  align-self:center;
+}
+.reading-card{
+  background:var(--card2);
+  border:2px solid rgba(0,245,255,0.25);
+  border-radius:var(--r);
+  padding:30px;
+  box-shadow:0 0 30px rgba(0,245,255,0.1);
+}
+.reading-title{
+  font-family:'Lilita One',cursive;
+  font-size:1.6rem;color:var(--cyan);
+  margin-bottom:14px;display:flex;align-items:center;gap:10px;
+}
+.reading-text{
+  font-size:1.15rem;line-height:1.85;
+  font-weight:600;color:var(--offwhite);
+}
+.btn-reading-done{
+  font-family:'Lilita One',cursive;
+  font-size:1.3rem;padding:16px 50px;
+  border-radius:50px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--cyan),#007AFF);
+  color:var(--bg1);
+  box-shadow:0 0 24px rgba(0,245,255,0.5), 0 6px 0 #004080;
+  transition:all 0.15s;position:relative;top:0;
+  align-self:center;
+}
+.btn-reading-done:hover{top:-3px;box-shadow:0 0 40px rgba(0,245,255,0.7),0 9px 0 #004080;}
+.btn-reading-done:active{top:2px;box-shadow:0 0 14px rgba(0,245,255,0.3),0 3px 0 #004080;}
+
+/* ============================================================
+   SCREEN: GAME
+============================================================ */
+#screen-game{
+  gap:0;
+  max-width:780px;
+  margin:0 auto;
+  width:100%;
+  padding-top:10px;
+  padding-bottom:30px;
+  justify-content:flex-start;
+}
+
+/* HUD */
+.hud{
+  width:100%;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 4px;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.hud-score{
+  font-family:'Lilita One',cursive;
+  font-size:1.5rem;
+  color:var(--gold);
+  text-shadow:0 0 14px rgba(255,215,0,0.7);
+  display:flex;align-items:center;gap:8px;
+}
+.hud-score span{
+  transition:transform 0.2s;
+}
+.score-bump{transform:scale(1.4)!important;}
+
+.hud-lives{font-size:1.5rem;letter-spacing:2px;}
+
+.hud-counter{
+  font-weight:800;font-size:1rem;
+  color:var(--dim);
+}
+
+/* PROGRESS BAR */
+.progress-wrap{
+  width:100%;
+  background:rgba(255,255,255,0.08);
+  border-radius:50px;
+  height:14px;
+  margin-bottom:20px;
+  overflow:hidden;
+  border:2px solid rgba(255,255,255,0.1);
+}
+.progress-bar{
+  height:100%;border-radius:50px;
+  background:linear-gradient(90deg,var(--accent),var(--gold),var(--lime));
+  background-size:200% 100%;
+  transition:width 0.5s cubic-bezier(0.34,1.4,0.64,1);
+  animation:shimmer 2s linear infinite;
+}
+@keyframes shimmer{
+  0%{background-position:0% 50%;}
+  100%{background-position:200% 50%;}
+}
+
+/* TOPIC CHIP */
+.topic-chip{
+  align-self:flex-start;
+  border-radius:50px;padding:6px 18px;
+  font-weight:800;font-size:0.88rem;
+  letter-spacing:0.8px;text-transform:uppercase;
+  margin-bottom:10px;
+}
+
+/* QUESTION CARD */
+.question-card{
+  width:100%;
+  background:var(--card);
+  border-radius:var(--r);
+  padding:28px 28px 24px;
+  border:2px solid rgba(255,255,255,0.1);
+  box-shadow:0 12px 40px rgba(0,0,0,0.4);
+  margin-bottom:20px;
+  animation:cardIn 0.4s cubic-bezier(0.34,1.4,0.64,1);
+}
+@keyframes cardIn{
+  from{opacity:0;transform:scale(0.88) translateY(24px);}
+  to{opacity:1;transform:scale(1) translateY(0);}
+}
+.q-num{
+  font-size:0.85rem;font-weight:800;
+  color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;
+  margin-bottom:8px;
+}
+.q-text{
+  font-size:1.25rem;font-weight:800;
+  line-height:1.5;color:var(--white);
+}
+
+/* ANSWER OPTIONS */
+.answers{
+  width:100%;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.ans-btn{
+  font-family:'Nunito',sans-serif;
+  font-size:1.1rem;font-weight:800;
+  padding:16px 18px;
+  border-radius:var(--rs);
+  border:3px solid rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.05);
+  color:var(--white);
+  cursor:pointer;
+  text-align:left;
+  display:flex;align-items:center;gap:12px;
+  transition:all 0.18s;
+  position:relative;overflow:hidden;
+}
+.ans-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.07),transparent);
+  opacity:0;transition:opacity 0.2s;
+}
+.ans-btn:hover:not(:disabled)::before{opacity:1;}
+.ans-btn:hover:not(:disabled){
+  border-color:rgba(255,255,255,0.4);
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:0 8px 24px rgba(0,0,0,0.3);
+}
+.ans-btn:disabled{cursor:default;}
+.ans-letter{
+  width:34px;height:34px;border-radius:10px;
+  background:rgba(255,255,255,0.1);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Lilita One',cursive;font-size:1rem;
+  flex-shrink:0;transition:all 0.2s;
+}
+.ans-btn.correct-ans{
+  border-color:var(--lime)!important;
+  background:rgba(57,255,20,0.15)!important;
+  animation:correctShake 0.4s ease;
+}
+.ans-btn.correct-ans .ans-letter{background:var(--lime);color:#000;}
+@keyframes correctShake{
+  0%,100%{transform:translateX(0);}
+  25%{transform:translateX(-5px);}
+  75%{transform:translateX(5px);}
+}
+.ans-btn.wrong-ans{
+  border-color:var(--accent)!important;
+  background:rgba(233,69,96,0.15)!important;
+  animation:wrongShake 0.4s ease;
+}
+.ans-btn.wrong-ans .ans-letter{background:var(--accent);color:#fff;}
+@keyframes wrongShake{
+  0%,100%{transform:translateX(0);}
+  20%,60%{transform:translateX(-8px);}
+  40%,80%{transform:translateX(8px);}
+}
+
+/* FEEDBACK */
+.feedback{
+  width:100%;
+  border-radius:var(--rs);
+  padding:14px 20px;
+  font-size:1.05rem;font-weight:800;
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:16px;
+  opacity:0;transform:scale(0.9);
+  transition:all 0.3s cubic-bezier(0.34,1.5,0.64,1);
+  pointer-events:none;
+}
+.feedback.show{opacity:1;transform:scale(1);}
+.feedback.ok{background:rgba(57,255,20,0.12);border:2px solid var(--lime);color:var(--lime);}
+.feedback.fail{background:rgba(233,69,96,0.12);border:2px solid var(--accent);color:#ff8fb0;}
+.fb-icon{font-size:1.8rem;}
+
+/* NEXT BUTTON */
+.btn-next{
+  align-self:center;
+  font-family:'Lilita One',cursive;
+  font-size:1.25rem;padding:15px 50px;
+  border-radius:50px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--gold),var(--orange));
+  color:var(--bg1);
+  box-shadow:0 0 22px rgba(255,215,0,0.5), 0 6px 0 #7a4800;
+  transition:all 0.15s;position:relative;top:0;
+  opacity:0;pointer-events:none;
+  transform:translateY(10px);
+  transition:opacity 0.3s, transform 0.3s, box-shadow 0.15s, top 0.15s;
+}
+.btn-next.visible{opacity:1;pointer-events:auto;transform:translateY(0);}
+.btn-next:hover{top:-3px;box-shadow:0 0 36px rgba(255,215,0,0.8),0 9px 0 #7a4800;}
+.btn-next:active{top:2px;box-shadow:0 0 14px rgba(255,215,0,0.3),0 3px 0 #7a4800;}
+
+/* ============================================================
+   SCREEN: RESULT
+============================================================ */
+#screen-result{
+  text-align:center;
+  gap:22px;
+  padding:30px 16px 40px;
+}
+.result-fireworks{
+  font-size:3.5rem;
+  animation:spin 2s linear infinite;
+  display:inline-block;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.result-trophy{
+  font-size:6rem;
+  display:inline-block;
+  animation:trophyBounce 1s cubic-bezier(0.34,1.7,0.64,1) both, trophyFloat 3s ease-in-out 1s infinite;
+  filter:drop-shadow(0 0 20px rgba(255,215,0,0.8));
+}
+@keyframes trophyBounce{
+  from{opacity:0;transform:scale(0) rotate(-20deg);}
+  to{opacity:1;transform:scale(1) rotate(0deg);}
+}
+@keyframes trophyFloat{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-12px);}
+}
+
+.result-title{
+  font-family:'Lilita One',cursive;
+  font-size:clamp(2rem,5vw,3.2rem);
+  line-height:1.1;
+}
+.result-subtitle{
+  font-size:1.1rem;font-weight:700;
+  color:var(--dim);
+}
+
+/* BIG SCORE DISPLAY */
+.score-display{
+  background:var(--card2);
+  border:3px solid;
+  border-radius:var(--r);
+  padding:28px 44px;
+  display:inline-flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  box-shadow:0 0 40px rgba(0,0,0,0.4);
+  animation:scoreReveal 0.6s cubic-bezier(0.34,1.5,0.64,1) 0.3s both;
+}
+@keyframes scoreReveal{
+  from{opacity:0;transform:scale(0.5);}
+  to{opacity:1;transform:scale(1);}
+}
+.score-fraction{
+  font-family:'Lilita One',cursive;
+  font-size:clamp(3rem,10vw,5.5rem);
+  line-height:1;
+}
+.score-label{
+  font-size:1rem;font-weight:700;
+  color:var(--dim);letter-spacing:1px;text-transform:uppercase;
+}
+
+/* GRADE BADGE */
+.grade-badge{
+  font-family:'Lilita One',cursive;
+  font-size:1.8rem;
+  border-radius:50px;
+  padding:14px 40px;
+  box-shadow:0 0 28px rgba(0,0,0,0.3);
+  animation:badgeIn 0.5s cubic-bezier(0.34,1.7,0.64,1) 0.6s both;
+}
+@keyframes badgeIn{
+  from{opacity:0;transform:translateY(20px) scale(0.8);}
+  to{opacity:1;transform:translateY(0) scale(1);}
+}
+
+/* RESULT BREAKDOWN */
+.breakdown{
+  display:flex;gap:16px;justify-content:center;flex-wrap:wrap;
+  width:100%;max-width:500px;
+}
+.bk-chip{
+  flex:1;min-width:140px;
+  border-radius:var(--rs);
+  padding:16px 20px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  border:2px solid;
+}
+.bk-num{
+  font-family:'Lilita One',cursive;font-size:2.2rem;line-height:1;
+}
+.bk-label{font-size:0.9rem;font-weight:700;opacity:0.75;}
+
+/* TOPIC BREAKDOWN */
+.topic-results{
+  width:100%;max-width:600px;
+  background:var(--card2);
+  border-radius:var(--r);
+  padding:24px;
+  border:2px solid rgba(255,255,255,0.1);
+  text-align:left;
+}
+.topic-results-title{
+  font-family:'Lilita One',cursive;
+  font-size:1.2rem;
+  color:var(--gold);
+  margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;
+}
+.topic-row{
+  display:flex;align-items:center;gap:12px;
+  padding:8px 0;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.topic-row:last-child{border-bottom:none;}
+.topic-name{font-weight:700;font-size:0.95rem;flex:1;}
+.topic-mini-bar-wrap{flex:2;background:rgba(255,255,255,0.08);border-radius:50px;height:10px;overflow:hidden;}
+.topic-mini-bar{height:100%;border-radius:50px;transition:width 1s ease 0.5s;}
+.topic-pct{font-family:'Lilita One',cursive;font-size:0.95rem;min-width:38px;text-align:right;}
+
+/* RETRY BUTTON */
+.btn-retry{
+  font-family:'Lilita One',cursive;
+  font-size:1.4rem;padding:17px 55px;
+  border-radius:50px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--accent),#c0392b);
+  color:white;
+  box-shadow:0 0 28px rgba(233,69,96,0.6),0 7px 0 #8b0000;
+  transition:all 0.15s;position:relative;top:0;
+  letter-spacing:0.5px;
+}
+.btn-retry:hover{top:-3px;box-shadow:0 0 46px rgba(233,69,96,0.9),0 10px 0 #8b0000;}
+.btn-retry:active{top:2px;box-shadow:0 0 14px rgba(233,69,96,0.3),0 3px 0 #8b0000;}
+
+/* ============================================================
+   CONFETTI CANVAS
+============================================================ */
+#confetti-canvas{
+  position:fixed;inset:0;z-index:999;pointer-events:none;
+}
+
+/* ============================================================
+   FLOATING POINTS
+============================================================ */
+.float-points{
+  position:fixed;
+  font-family:'Lilita One',cursive;
+  font-size:1.8rem;
+  pointer-events:none;
+  z-index:998;
+  animation:floatUp 1.2s ease-out forwards;
+}
+@keyframes floatUp{
+  0%{opacity:1;transform:translateY(0) scale(1);}
+  100%{opacity:0;transform:translateY(-90px) scale(1.3);}
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media(max-width:520px){
+  .answers{grid-template-columns:1fr;}
+  .question-card{padding:20px 16px;}
+  .ans-btn{font-size:1rem;}
+  .hud{gap:8px;}
+  .score-display{padding:20px 28px;}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-shapes">
+  <div class="shape"></div><div class="shape"></div>
+  <div class="shape"></div><div class="shape"></div>
+</div>
+
+<canvas id="confetti-canvas"></canvas>
+
+<!-- ===================== SCREEN: START ===================== -->
+<div class="screen active" id="screen-start">
+  <div class="start-mascot">🎮</div>
+  <div class="game-logo">ComuniGame</div>
+  <div class="logo-sub">6° de Primaria · Comunicación</div>
+
+  <div class="start-info">
+    <div class="info-chip">📝 20 Preguntas</div>
+    <div class="info-chip">🏆 Sistema de puntos</div>
+    <div class="info-chip">⚡ 7 Temas</div>
+  </div>
+
+  <div style="color:var(--dim);font-weight:700;font-size:1rem;text-align:center;max-width:420px;line-height:1.6;">
+    Primero leerás un texto corto y luego responderás 20 preguntas de Comunicación. ¡Demuestra todo lo que sabes! 🚀
+  </div>
+
+  <button class="btn-start" onclick="startReading()">¡JUGAR AHORA!</button>
+</div>
+
+<!-- ===================== SCREEN: READING ===================== -->
+<div class="screen" id="screen-reading">
+  <div class="reading-badge">📖 Lee con atención</div>
+  <div class="reading-card">
+    <div class="reading-title">🌿 La Selva Amazónica</div>
+    <div class="reading-text" id="reading-text">
+      La selva amazónica es el bosque tropical más grande del mundo. Se encuentra principalmente en Brasil, aunque también abarca países como Perú, Colombia y Venezuela. En su interior habitan millones de especies de plantas, animales e insectos, muchos de ellos aún desconocidos para la ciencia.
+      <br><br>
+      Los árboles de la Amazonía son tan altos y tupidos que su copa forma una especie de techo verde llamado dosel, que apenas deja pasar la luz solar al suelo. Dentro del bosque viven jaguares, anacondas, loros de colores brillantes y miles de tipos de mariposas.
+      <br><br>
+      Además, el río Amazonas atraviesa esta selva de oeste a este, siendo el río más caudaloso del planeta. Las comunidades indígenas que viven allí conocen los secretos de esta naturaleza y la cuidan como su hogar. Hoy en día, la deforestación amenaza con destruir este pulmón verde del mundo.
+    </div>
+  </div>
+  <button class="btn-reading-done" onclick="startGame()">¡Listo, a jugar! ▶</button>
+</div>
+
+<!-- ===================== SCREEN: GAME ===================== -->
+<div class="screen" id="screen-game">
+  <div class="hud">
+    <div class="hud-score">⭐ <span id="hud-score-val">0</span></div>
+    <div class="hud-counter" id="hud-counter">Pregunta 1 / 20</div>
+    <div class="hud-lives" id="hud-lives">❤️❤️❤️</div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+  </div>
+
+  <div class="topic-chip" id="topic-chip"></div>
+
+  <div class="question-card" id="question-card">
+    <div class="q-num" id="q-num"></div>
+    <div class="q-text" id="q-text"></div>
+  </div>
+
+  <div class="answers" id="answers"></div>
+
+  <div class="feedback" id="feedback">
+    <span class="fb-icon" id="fb-icon"></span>
+    <span id="fb-text"></span>
+  </div>
+
+  <button class="btn-next" id="btn-next" onclick="nextQuestion()">Siguiente ▶</button>
+</div>
+
+<!-- ===================== SCREEN: RESULT ===================== -->
+<div class="screen" id="screen-result">
+  <div id="result-emoji" style="font-size:3rem;"></div>
+  <div class="result-trophy" id="result-trophy">🏆</div>
+  <div class="result-title" id="result-title"></div>
+  <div class="result-subtitle" id="result-subtitle"></div>
+
+  <div class="score-display" id="score-display">
+    <div class="score-fraction" id="score-fraction"></div>
+    <div class="score-label">PUNTOS</div>
+  </div>
+
+  <div class="grade-badge" id="grade-badge"></div>
+
+  <div class="breakdown">
+    <div class="bk-chip" style="border-color:var(--lime);background:rgba(57,255,20,0.07);">
+      <div class="bk-num" style="color:var(--lime);" id="res-correct">0</div>
+      <div class="bk-label" style="color:var(--lime);">✅ Correctas</div>
+    </div>
+    <div class="bk-chip" style="border-color:var(--accent);background:rgba(233,69,96,0.07);">
+      <div class="bk-num" style="color:var(--accent);" id="res-wrong">0</div>
+      <div class="bk-label" style="color:var(--accent);">❌ Incorrectas</div>
+    </div>
+    <div class="bk-chip" style="border-color:var(--gold);background:rgba(255,215,0,0.07);">
+      <div class="bk-num" style="color:var(--gold);" id="res-pct">0%</div>
+      <div class="bk-label" style="color:var(--gold);">📊 Aciertos</div>
+    </div>
+  </div>
+
+  <div class="topic-results">
+    <div class="topic-results-title">📈 Resultados por tema</div>
+    <div id="topic-breakdown"></div>
+  </div>
+
+  <button class="btn-retry" onclick="restartGame()">🔄 ¡Jugar de nuevo!</button>
+</div>
+
+<script>
+// ============================================================
+// DATA — 20 QUESTIONS
+// ============================================================
+const ALL_QUESTIONS = [
+  // COMPRENSIÓN LECTORA (4 preguntas)
+  {
+    topic:'Comprensión Lectora', topicColor:'#00F5FF',
+    q:'Según el texto, ¿en qué país se encuentra principalmente la selva amazónica?',
+    opts:['Perú','Colombia','Brasil','Venezuela'],
+    ans:2,
+    exp:'El texto dice que se encuentra "principalmente en Brasil".'
+  },
+  {
+    topic:'Comprensión Lectora', topicColor:'#00F5FF',
+    q:'¿Cómo se llama el "techo verde" que forman las copas de los árboles?',
+    opts:['Canopia','Dosel','Corona','Manto'],
+    ans:1,
+    exp:'Se llama "dosel" y apenas deja pasar la luz solar.'
+  },
+  {
+    topic:'Comprensión Lectora', topicColor:'#00F5FF',
+    q:'¿Cuál es el problema que amenaza a la selva amazónica según el texto?',
+    opts:['Las inundaciones','La minería','La deforestación','El turismo'],
+    ans:2,
+    exp:'"La deforestación amenaza con destruir este pulmón verde del mundo."'
+  },
+  {
+    topic:'Comprensión Lectora', topicColor:'#00F5FF',
+    q:'¿Cómo recorre el río Amazonas la selva?',
+    opts:['De norte a sur','De sur a norte','De este a oeste','De oeste a este'],
+    ans:3,
+    exp:'El texto dice que el río Amazonas atraviesa la selva "de oeste a este".'
+  },
+  // ANALOGÍAS (3 preguntas)
+  {
+    topic:'Analogías', topicColor:'#BF5FFF',
+    q:'Perro es a cachorro como gato es a:',
+    opts:['felino','gatito','tigre','ronroneo'],
+    ans:1,
+    exp:'Cachorro es la cría del perro; gatito es la cría del gato.'
+  },
+  {
+    topic:'Analogías', topicColor:'#BF5FFF',
+    q:'Maestro es a escuela como médico es a:',
+    opts:['enfermedad','receta','hospital','medicina'],
+    ans:2,
+    exp:'El maestro trabaja en la escuela; el médico trabaja en el hospital.'
+  },
+  {
+    topic:'Analogías', topicColor:'#BF5FFF',
+    q:'Pez es a agua como pájaro es a:',
+    opts:['nido','pluma','aire','canción'],
+    ans:2,
+    exp:'El pez vive en el agua; el pájaro vive en el aire.'
+  },
+  // SINÓNIMOS (3 preguntas)
+  {
+    topic:'Sinónimos', topicColor:'#39FF14',
+    q:'¿Cuál es el sinónimo de VALIENTE?',
+    opts:['cobarde','audaz','tímido','débil'],
+    ans:1,
+    exp:'Audaz significa valiente, atrevido.'
+  },
+  {
+    topic:'Sinónimos', topicColor:'#39FF14',
+    q:'¿Cuál es el sinónimo de ALEGRE?',
+    opts:['triste','enojado','feliz','cansado'],
+    ans:2,
+    exp:'Feliz es sinónimo de alegre.'
+  },
+  {
+    topic:'Sinónimos', topicColor:'#39FF14',
+    q:'¿Cuál es el sinónimo de HERMOSO?',
+    opts:['feo','pequeño','bello','oscuro'],
+    ans:2,
+    exp:'Bello es sinónimo de hermoso.'
+  },
+  // ANTÓNIMOS (3 preguntas)
+  {
+    topic:'Antónimos', topicColor:'#FF2D78',
+    q:'¿Cuál es el antónimo de FRÍO?',
+    opts:['helado','templado','caliente','suave'],
+    ans:2,
+    exp:'Caliente es el contrario de frío.'
+  },
+  {
+    topic:'Antónimos', topicColor:'#FF2D78',
+    q:'¿Cuál es el antónimo de DÍA?',
+    opts:['tarde','amanecer','noche','alba'],
+    ans:2,
+    exp:'Noche es el contrario de día.'
+  },
+  {
+    topic:'Antónimos', topicColor:'#FF2D78',
+    q:'¿Cuál es el antónimo de SUBIR?',
+    opts:['escalar','trepar','saltar','bajar'],
+    ans:3,
+    exp:'Bajar es el contrario de subir.'
+  },
+  // DETERMINANTES (2 preguntas)
+  {
+    topic:'Determinantes', topicColor:'#FF7C2A',
+    q:'Completa: "___ estudiantes llegaron tarde a clase."',
+    opts:['Algún','Algunos','Mucho','Ningún'],
+    ans:1,
+    exp:'"Algunos" concuerda con el sustantivo masculino plural "estudiantes".'
+  },
+  {
+    topic:'Determinantes', topicColor:'#FF7C2A',
+    q:'Completa: "No vino ___ alumno a la reunión."',
+    opts:['todos','varios','ningún','pocos'],
+    ans:2,
+    exp:'"Ningún" es un determinante indefinido de negación en masculino singular.'
+  },
+  // ARTÍCULOS (3 preguntas)
+  {
+    topic:'Artículos', topicColor:'#FFD700',
+    q:'Selecciona el artículo correcto: "___ mariposa voló sobre las flores."',
+    opts:['El','La','Los','Las'],
+    ans:1,
+    exp:'"La" es el artículo determinado femenino singular para "mariposa".'
+  },
+  {
+    topic:'Artículos', topicColor:'#FFD700',
+    q:'Selecciona el artículo correcto: "Compré ___ cuaderno nuevo."',
+    opts:['una','un','unos','unas'],
+    ans:1,
+    exp:'"Un" es el artículo indeterminado masculino singular para "cuaderno".'
+  },
+  {
+    topic:'Artículos', topicColor:'#FFD700',
+    q:'Selecciona el artículo correcto: "Vi ___ película muy emocionante."',
+    opts:['un','el','los','una'],
+    ans:3,
+    exp:'"Una" es el artículo indeterminado femenino singular para "película".'
+  },
+  // PREPOSICIONES (2 preguntas)
+  {
+    topic:'Preposiciones', topicColor:'#FF6B9D',
+    q:'Completa: "El gato está encima ___ la mesa."',
+    opts:['en','de','por','con'],
+    ans:1,
+    exp:'"De" es la preposición correcta: "encima de la mesa".'
+  },
+  {
+    topic:'Preposiciones', topicColor:'#FF6B9D',
+    q:'Completa: "Llegué tarde ___ la lluvia."',
+    opts:['para','con','por','de'],
+    ans:2,
+    exp:'"Por" indica causa: llegué tarde por la lluvia.'
+  }
+];
+
+// ============================================================
+// GAME STATE
+// ============================================================
+let questions = [];
+let current = 0;
+let score = 0;
+let lives = 3;
+let correct = 0;
+let wrong = 0;
+let answered = false;
+const topicStats = {};
+
+const LETTERS = ['A','B','C','D'];
+const POINTS_CORRECT = 50;
+
+// ============================================================
+// SCREENS
+// ============================================================
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startReading(){
+  showScreen('screen-reading');
+}
+
+function startGame(){
+  questions = shuffle([...ALL_QUESTIONS]);
+  current=0; score=0; lives=3; correct=0; wrong=0;
+  Object.keys(topicStats).forEach(k=>delete topicStats[k]);
+  showScreen('screen-game');
+  loadQuestion();
+}
+
+function restartGame(){
+  stopConfetti();
+  showScreen('screen-start');
+}
+
+// ============================================================
+// SHUFFLE
+// ============================================================
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+// ============================================================
+// LOAD QUESTION
+// ============================================================
+function loadQuestion(){
+  if(current>=questions.length){endGame();return;}
+
+  answered=false;
+  const q = questions[current];
+
+  // HUD
+  document.getElementById('hud-score-val').textContent = score;
+  document.getElementById('hud-counter').textContent = `Pregunta ${current+1} / ${questions.length}`;
+  renderLives();
+
+  // Progress
+  const pct = (current/questions.length)*100;
+  document.getElementById('progress-bar').style.width = pct+'%';
+
+  // Topic chip
+  const chip = document.getElementById('topic-chip');
+  chip.textContent = q.topic;
+  chip.style.background = q.topicColor+'22';
+  chip.style.border = `2px solid ${q.topicColor}66`;
+  chip.style.color = q.topicColor;
+
+  // Question card — re-animate
+  const card = document.getElementById('question-card');
+  card.style.animation='none';
+  void card.offsetWidth;
+  card.style.animation='cardIn 0.4s cubic-bezier(0.34,1.4,0.64,1)';
+
+  document.getElementById('q-num').textContent = `PREGUNTA ${current+1}`;
+  document.getElementById('q-text').textContent = q.q;
+
+  // Answers
+  const container = document.getElementById('answers');
+  container.innerHTML='';
+  q.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='ans-btn';
+    btn.innerHTML=`<span class="ans-letter">${LETTERS[i]}</span>${opt}`;
+    btn.onclick=()=>selectAnswer(i);
+    container.appendChild(btn);
+  });
+
+  // Hide feedback & next
+  hideFeedback();
+  const nb=document.getElementById('btn-next');
+  nb.classList.remove('visible');
+}
+
+// ============================================================
+// SELECT ANSWER
+// ============================================================
+function selectAnswer(idx){
+  if(answered) return;
+  answered=true;
+
+  const q=questions[current];
+  const btns=document.querySelectorAll('.ans-btn');
+  btns.forEach(b=>b.disabled=true);
+
+  const isOk=idx===q.ans;
+
+  btns[idx].classList.add(isOk?'correct-ans':'wrong-ans');
+  if(!isOk) btns[q.ans].classList.add('correct-ans');
+
+  // Stats
+  if(!topicStats[q.topic]) topicStats[q.topic]={c:0,t:0};
+  topicStats[q.topic].t++;
+
+  if(isOk){
+    score+=POINTS_CORRECT;
+    correct++;
+    topicStats[q.topic].c++;
+    showFeedback(true,`¡Correcto! ${q.exp}`);
+    bumpScore();
+    spawnFloatPoints(`+${POINTS_CORRECT}`);
+  } else {
+    lives=Math.max(0,lives-1);
+    wrong++;
+    showFeedback(false,`Incorrecto. ${q.exp}`);
+    renderLives();
+    if(lives===0){
+      setTimeout(()=>endGame(),1800);
+      return;
+    }
+  }
+
+  updateHudScore();
+  document.getElementById('btn-next').classList.add('visible');
+}
+
+function updateHudScore(){
+  document.getElementById('hud-score-val').textContent=score;
+}
+
+function nextQuestion(){
+  current++;
+  loadQuestion();
+}
+
+// ============================================================
+// FEEDBACK
+// ============================================================
+function showFeedback(ok,text){
+  const fb=document.getElementById('feedback');
+  document.getElementById('fb-icon').textContent=ok?'🎉':'💡';
+  document.getElementById('fb-text').textContent=text;
+  fb.className=`feedback show ${ok?'ok':'fail'}`;
+}
+function hideFeedback(){
+  document.getElementById('feedback').className='feedback';
+}
+
+// ============================================================
+// LIVES
+// ============================================================
+function renderLives(){
+  document.getElementById('hud-lives').textContent='❤️'.repeat(lives)+'🖤'.repeat(3-lives);
+}
+
+// ============================================================
+// SCORE BUMP ANIMATION
+// ============================================================
+function bumpScore(){
+  const el=document.getElementById('hud-score-val');
+  el.classList.remove('score-bump');
+  void el.offsetWidth;
+  el.classList.add('score-bump');
+  setTimeout(()=>el.classList.remove('score-bump'),300);
+}
+
+// ============================================================
+// FLOATING POINTS
+// ============================================================
+function spawnFloatPoints(text){
+  const el=document.createElement('div');
+  el.className='float-points';
+  el.textContent=text;
+  el.style.color='var(--gold)';
+  el.style.textShadow='0 0 12px rgba(255,215,0,0.8)';
+  el.style.left=(30+Math.random()*40)+'%';
+  el.style.top=(40+Math.random()*20)+'%';
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),1300);
+}
+
+// ============================================================
+// END GAME
+// ============================================================
+function endGame(){
+  showScreen('screen-result');
+
+  const total=questions.length;
+  const pct=Math.round((correct/total)*100);
+
+  // Grade
+  let grade, gradeColor, trophyEmoji, titleText, subText;
+
+  if(pct>=90){
+    grade='¡EXCELENTE! 20'; gradeColor='#FFD700';
+    trophyEmoji='🏆'; titleText='¡Eres un genio!';
+    subText='¡Resultado perfecto! Eres el campeón de Comunicación 🎉';
+  } else if(pct>=75){
+    grade='MUY BIEN  18-19'; gradeColor='#39FF14';
+    trophyEmoji='🥇'; titleText='¡Muy buen trabajo!';
+    subText='¡Casi perfecto! Sigue practicando y llegarás a 20 🌟';
+  } else if(pct>=60){
+    grade='BIEN  14-17'; gradeColor='#00F5FF';
+    trophyEmoji='🥈'; titleText='¡Buen esfuerzo!';
+    subText='Vas bien encaminado. ¡Un poco más de práctica! 📚';
+  } else if(pct>=40){
+    grade='REGULAR  11-13'; gradeColor='#FF7C2A';
+    trophyEmoji='🥉'; titleText='¡Puedes mejorar!';
+    subText='Revisa los temas y vuelve a intentarlo. ¡Tú puedes! 💪';
+  } else {
+    grade='NECESITA MEJORAR  0-10'; gradeColor='#FF2D78';
+    trophyEmoji='📖'; titleText='¡Sigue estudiando!';
+    subText='No te rindas. Lee el texto con cuidado y practica más 🌱';
+  }
+
+  document.getElementById('result-emoji').textContent=pct>=90?'🎆🎇🎆':'';
+  document.getElementById('result-trophy').textContent=trophyEmoji;
+  document.getElementById('result-title').textContent=titleText;
+  document.getElementById('result-title').style.color=gradeColor;
+  document.getElementById('result-subtitle').textContent=subText;
+
+  document.getElementById('score-fraction').textContent=score+' pts';
+  document.getElementById('score-fraction').style.color=gradeColor;
+  document.getElementById('score-display').style.borderColor=gradeColor;
+  document.getElementById('score-display').style.boxShadow=`0 0 40px ${gradeColor}44`;
+
+  const gb=document.getElementById('grade-badge');
+  gb.textContent='📋 Calificación: '+grade;
+  gb.style.background=gradeColor+'22';
+  gb.style.border=`3px solid ${gradeColor}`;
+  gb.style.color=gradeColor;
+
+  document.getElementById('res-correct').textContent=correct;
+  document.getElementById('res-wrong').textContent=wrong;
+  document.getElementById('res-pct').textContent=pct+'%';
+
+  // Topic breakdown
+  const container=document.getElementById('topic-breakdown');
+  container.innerHTML='';
+  const topicColors={
+    'Comprensión Lectora':'#00F5FF','Analogías':'#BF5FFF',
+    'Sinónimos':'#39FF14','Antónimos':'#FF2D78',
+    'Determinantes':'#FF7C2A','Artículos':'#FFD700','Preposiciones':'#FF6B9D'
+  };
+
+  ALL_QUESTIONS.reduce((topics,q)=>{
+    if(!topics.includes(q.topic)) topics.push(q.topic);
+    return topics;
+  },[]).forEach(topic=>{
+    const st=topicStats[topic]||{c:0,t:0};
+    if(st.t===0) return;
+    const p=Math.round((st.c/st.t)*100);
+    const color=topicColors[topic]||'#fff';
+    const row=document.createElement('div');
+    row.className='topic-row';
+    row.innerHTML=`
+      <div class="topic-name" style="color:${color}">${topic}</div>
+      <div class="topic-mini-bar-wrap">
+        <div class="topic-mini-bar" style="width:0%;background:${color}" data-pct="${p}"></div>
+      </div>
+      <div class="topic-pct" style="color:${color}">${p}%</div>
+    `;
+    container.appendChild(row);
+  });
+
+  // Animate bars
+  setTimeout(()=>{
+    document.querySelectorAll('.topic-mini-bar').forEach(bar=>{
+      bar.style.width=bar.dataset.pct+'%';
+    });
+  },400);
+
+  if(pct>=75) launchConfetti();
+}
+
+// ============================================================
+// CONFETTI
+// ============================================================
+let confettiFrame=null;
+function launchConfetti(){
+  const canvas=document.getElementById('confetti-canvas');
+  const ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+
+  const colors=['#FFD700','#FF2D78','#39FF14','#00F5FF','#BF5FFF','#FF7C2A','#FF6B9D'];
+  const pieces=[];
+
+  for(let i=0;i<160;i++){
+    pieces.push({
+      x:Math.random()*canvas.width,
+      y:Math.random()*canvas.height-canvas.height,
+      w:8+Math.random()*8,
+      h:8+Math.random()*14,
+      color:colors[Math.floor(Math.random()*colors.length)],
+      vx:(Math.random()-0.5)*4,
+      vy:2+Math.random()*4,
+      rot:Math.random()*360,
+      vr:(Math.random()-0.5)*6,
+      op:1
+    });
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      ctx.save();
+      ctx.translate(p.x+p.w/2,p.y+p.h/2);
+      ctx.rotate(p.rot*Math.PI/180);
+      ctx.globalAlpha=p.op;
+      ctx.fillStyle=p.color;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+      p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr;
+      if(p.y>canvas.height+20) p.op-=0.02;
+    });
+    const alive=pieces.some(p=>p.op>0);
+    if(alive) confettiFrame=requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  draw();
+}
+
+function stopConfetti(){
+  if(confettiFrame){cancelAnimationFrame(confettiFrame);confettiFrame=null;}
+  const canvas=document.getElementById('confetti-canvas');
+  canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);
+}
+</script>
+</body>
+</html>
